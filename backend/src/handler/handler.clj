@@ -4,7 +4,8 @@
             [queries.queries :as qrs]
             [schema.core :as schema]
             [domain.industry :refer :all]
-            [domain.company :refer :all]))
+            [domain.company :refer :all]
+            [domain.users :refer :all]))
 (def auth)
 
 (def app
@@ -15,7 +16,8 @@
       :data {:info {:title "API"
                     :description "Companies Api"}
              :tags [{:name "api"}
-                    {:name "industry"}]}}}
+                    {:name "industry"}
+                    {:name "login"}]}}}
 
     (context "/api" []
       :tags ["api"]
@@ -28,4 +30,13 @@
           :summary "Get companies for particular industry"
           :path-params [industry_id :- schema/Num]
           (ok (qrs/get-companies-by-industry industry_id))))
-        )))
+        
+          (context "/login" []
+            :tags ["login"]
+             (POST "/" []
+              :summary "Admin login"
+              :body [admin AdminLogin]
+              (let [{:keys [username password]} admin]
+                (ok (qrs/login-admin username password)))))
+                       
+          )))
