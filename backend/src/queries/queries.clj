@@ -33,3 +33,63 @@
   (first (select users
                  (fields :username)
                  (where {:username username :password (md5 password)}))))
+
+;; company
+
+(defn get-companies []
+  (select company
+          (with industry)
+          (fields :company.id :company.fullName :company.numberOfEmployees :industry_id :industry.industryName)
+          ))
+
+
+(defn get-company-by-name [fullName]
+  (first (select company (fields :id :fullName :numberOfEmployees)
+          (where {:fullName fullName}))))
+
+
+(defn get-company [id]
+  (first (select company (fields :id :fullName :numberOfEmployees)
+          (where {:id id}))))
+
+(defn delete-company [username id]
+  (def existingCompany (get-company id))
+  (if (= username "admin")
+    (if existingCompany
+           (delete company (where {:id id}))
+           "Company does not exist")
+  "Please provide credentials!"))
+
+
+(defn add-company [username fullName numberOfEmployees industry_id]
+  (def existingCompany (get-company-by-name fullName))
+  (def existingIndustry (get-industry industry_id))
+  (if (= username "admin")
+  (if existingCompany
+    "Company already exist!"
+    (if existingIndustry
+        ((def insertCompany
+           (insert company (values
+                             {:fullName fullName
+                              :industry_id industry_id
+                              :numberOfEmployees numberOfEmployees
+                              })))
+         (def insertedCompany (get insertCompany :generated_key))
+         (get-company insertedCompany))
+        "Industry does not exist!"))
+  "Please provide credentials!"))
+
+(defn update-company [username id fullName numberOfEmployees industry_id]
+  (def existingCompany (get-company id))
+  (def existingIndustry (get-industry industry_id))
+  (if (= username "admin")
+    (if existingCompany
+      (if existingIndustry
+         (update company (set-fields
+                    {:fullName fullName
+                     :numberOfEmployees numberOfEmployees
+                     :industry_id industry_id})
+          (where {:id id}))
+         "Industry does not exist!")
+         "Company does not exist!")
+  "Please provide credentials!"))                
