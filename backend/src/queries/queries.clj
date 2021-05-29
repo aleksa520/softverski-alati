@@ -5,7 +5,8 @@
             [clojure.core :as core]
             [domain.industry :refer :all]
             [domain.company :refer :all]
-            [domain.users :refer :all])
+            [domain.users :refer :all]
+            [domain.company_review_form :refer :all])
   (:import (java.security MessageDigest)))
 
 (defn md5 [^String s]
@@ -93,3 +94,12 @@
          "Industry does not exist!")
          "Company does not exist!")
   "Please provide credentials!"))                
+
+;; company review
+
+(defn add-review [stars comment company_id]
+  (insert company_review_form (values {
+                                       :stars stars
+                                       :comment comment
+                                       :company_id company_id
+                                       })))

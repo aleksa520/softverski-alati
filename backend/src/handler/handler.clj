@@ -5,7 +5,8 @@
             [schema.core :as schema]
             [domain.industry :refer :all]
             [domain.company :refer :all]
-            [domain.users :refer :all]))
+            [domain.users :refer :all]
+            [domain.company_review_form :refer :all]))
 (def auth)
 
 (def app
@@ -18,7 +19,8 @@
              :tags [{:name "api"}
                     {:name "industry"}
                     {:name "login"}
-                    {:name "companies"}]}}}
+                    {:name "companies"}
+                    {:name "company-review-forms"}]}}}
 
     (context "/api" []
       :tags ["api"]
@@ -67,4 +69,11 @@
                 :path-params [id :- schema/Num]
                 (ok (qrs/delete-company username id))))                
 
+      (context "/company-review-forms" []
+        :tags ["company-review-forms"]
+        (POST "/" []
+          :summary "Rate company by giving stars to company and add a comment"
+          :body [form-data SaveReview]
+          (let [{:keys [stars comment company_id]} form-data]
+            (ok (qrs/add-review stars comment company_id)))))
           )))
