@@ -1,44 +1,37 @@
-# backend
+# Companies Application - backend
 
-FIXME: description
+## Clojure REST API
 
-## Installation
+This is a clojure project, that uses Compojure, Swagger, Ring and Korma. Swagger is for "sweet API", and Korma is used for communicating with the MySQL database.
 
-Download from http://example.com/FIXME.
+## Requirements
 
-## Usage
+First thing you need is Java. You can check if you have java on your machine with 
 
-FIXME: explanation
+    java -version
 
-    $ java -jar backend-0.1.0-standalone.jar [args]
+Install [Leiningen](https://leiningen.org/) on your machine.
 
-## Options
+Install [MySQL](https://dev.mysql.com/downloads/mysql/).
+You can create database from script that is located in database.sql file in resources folder. Change database configuration in database.clj file in database folder.
+Main thing to change is user and password.
 
-FIXME: listing of options this app accepts.
+## Start the server 
 
-## Examples
+    lein ring server
 
-...
+It will open the Swagger "sweet API" for Clojure in browser.
 
-### Bugs
+![ss](https://user-images.githubusercontent.com/36844154/120293419-89223b80-c2c5-11eb-8456-45d842820352.PNG)
 
-...
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+## Testing
+Tests are located in core_test.clj file. They can be started with following command
+
+    lein test
+    
+![testovi](https://user-images.githubusercontent.com/36844154/120312511-17ec8380-c2d9-11eb-8494-846acb550211.PNG)
 
 ## License
 
-Copyright © 2021 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+Copyright © 2021 Aleksa Pavlovic
